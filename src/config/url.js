@@ -1,0 +1,1 @@
+export const BASE_API_URL = "https://oasis-corner.lab577.co.uk/api/rest";
