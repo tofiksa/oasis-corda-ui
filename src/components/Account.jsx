@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Table from 'react-bootstrap/Table'
 
 const Account = props => {
 
@@ -12,14 +13,30 @@ const getBalancesFromAccount = () => {
         var currency = index.substring(0,3);
         arrBalances.push({currencyKey: currency, amount: account[index].total});
     }
+
     return arrBalances;
 }
 
 return (
-    
+        
     <div>
         <h2>{props.match.params.title}</h2>
-        <ul>{getBalancesFromAccount().map( amounts => <li key={amounts.currencyKey}>{amounts.amount} {amounts.currencyKey}</li>)}</ul>
+  <Table responsive>
+  <thead>
+    <tr>
+      {Array.from({ length: getBalancesFromAccount().length }).map((_, index) => (
+        <th key={index}>{getBalancesFromAccount()[index].currencyKey}</th>
+      ))}
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      {Array.from({ length: getBalancesFromAccount().length }).map((_, index) => (          
+        <td key={index}>{getBalancesFromAccount()[index].amount}</td>
+      ))}
+    </tr>
+  </tbody>
+</Table>
     </div>
 );
     

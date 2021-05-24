@@ -4,8 +4,6 @@ import {Navbar,Nav} from 'react-bootstrap'
 
 const Toppen = props => {
 
-    
-      
         return (
             <div>
         <Navbar expand="lg" variant="light" bg="light">
@@ -24,6 +22,4 @@ const Toppen = props => {
       
     }
     
-
-
 export default Toppen;
