@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table'
 
-const Account = props => {
+const Project = props => {
 
 const [account, setAccount] = useState(JSON.parse(localStorage.getItem(props.match.params.title)));
 
@@ -42,4 +42,4 @@ return (
     
 }
 
-export default Account
+export default Project
