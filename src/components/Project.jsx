@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table'
+import Nav from 'react-bootstrap/Nav'
+import Card from 'react-bootstrap/Card'
+import CardGroup from 'react-bootstrap/CardGroup'
 
 const Project = props => {
 
-const [account, setAccount] = useState(JSON.parse(localStorage.getItem(props.match.params.title)));
+//const [account, setAccount] = useState(JSON.parse(localStorage.getItem(props.match.params.title)));
 
-const getBalancesFromAccount = () => {
+/* const getBalancesFromAccount = () => {
 
     let arrBalances = [];
 
@@ -15,11 +18,50 @@ const getBalancesFromAccount = () => {
     }
 
     return arrBalances;
-}
+} */
 
 return (
+
+
+
+  <CardGroup>
+  <Card>
+  <Card.Header>
+    <Nav variant="tabs" defaultActiveKey="#overview">
+      <Nav.Item>
+        <Nav.Link href="#overview">Overview</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="#technical">Technical</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="#social">Social</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="#financial">Financial</Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link href="#disabled" disabled>
+          Disabled
+        </Nav.Link>
+      </Nav.Item>
+    </Nav>
+  </Card.Header>
+  <Card.Body>
+  <div>
+        <h2>Pate</h2>
+      </div>
+  </Card.Body>
+</Card>
+<Card>
+    <Card.Body>
+      <Card.Title>Funding status</Card.Title>
+      
+    </Card.Body>
+  </Card>
+</CardGroup>
         
-    <div>
+    /* <div>
         <h2>{props.match.params.title}</h2>
   <Table responsive>
   <thead>
@@ -37,7 +79,7 @@ return (
     </tr>
   </tbody>
 </Table>
-    </div>
+    </div> */
 );
     
 }

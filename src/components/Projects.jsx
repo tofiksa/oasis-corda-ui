@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import {BASE_API_URL} from '../config/url'
 import axios from "axios";
 import DataTable from './Datatable';
+import Project from './Project';
+import Card from 'react-bootstrap/Card'
+
 
 const api = axios.create({
   baseURL: BASE_API_URL,
@@ -23,23 +26,6 @@ class Projects extends Component {
   
   componentDidMount() {
 
-    api({
-      method: 'post',
-        url: '/auth/login',
-        data: {
-            username: 'oasis-corner',
-            password: 'kQmI5U2HngmX1oLc'
-        }
-    }).then((response) => {
-      if(response.status === 200) {
-        console.log(response);
-        this.setState({authString: "Bearer "+response.data});
-        localStorage.setItem("authstring","Bearer "+response.data);
-      }
-      }).catch((error) => {
-        console.log(Promise.reject(error));
-      });
-
       if (localStorage.getItem("authstring")) {
         
         api({
@@ -51,6 +37,7 @@ class Projects extends Component {
           const projectAccounts = [];
           const rowCategories = [];
           var max = 10;
+
             for (let tags in res.data) {
               //console.log("TAGS: ", res.data[tags].tags);
               for (let value in res.data[tags].tags)
@@ -76,9 +63,6 @@ class Projects extends Component {
               rowCategories.push(rowArr);
             }
 
-            console.log("Innenfor filteredaccount: ",projectAccounts);
-            console.log("rows: ", rowCategories);
-
             this.setState({ accounts: projectAccounts});
             this.setState( { rowArray: rowCategories});
         });
@@ -86,8 +70,12 @@ class Projects extends Component {
       } else {
         console.log("notin in da bucket!!")
       }
+      
+      this.getBalances();
+  }
 
-    this.state.accounts.map( account => 
+  getBalances() {
+    return this.state.accounts.map( account => 
       api({
         method: 'get',
         headers: {'Authorization': localStorage.getItem("authstring")},
@@ -96,7 +84,7 @@ class Projects extends Component {
         console.log("balances ", resp.data.tokenUriBalanceMap);
         localStorage.setItem(account.address.accountId,JSON.stringify(resp.data.tokenUriBalanceMap));
         
-      }));        
+      }));
   }
 
   render () {
@@ -112,10 +100,17 @@ class Projects extends Component {
 
     
     return (
+      
 
       <div className={"container"}>
         <div>
-          <DataTable headings={headings} rows={this.state.rowArray} />
+        <Project/>
+        
+        <Card>
+          <Card.Body>
+            <DataTable headings={headings} rows={this.state.rowArray} />  
+          </Card.Body>
+        </Card>
         </div>
       </div>
     );
