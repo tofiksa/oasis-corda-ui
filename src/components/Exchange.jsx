@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-class Investors extends Component {
+class Exchange extends Component {
 
     render() {
         return (
-            <h1>Investorspage</h1>
+            <h1>Exchange</h1>
         );
     }
 }
 
-export default Investors
+export default Exchange
