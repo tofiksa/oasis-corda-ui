@@ -19,10 +19,9 @@ const Project = props => {
 
     return arrBalances;
 } */
+console.log("PROPS PROJECT: ", props);
 
 return (
-
-
 
   <CardGroup>
   <Card>
@@ -48,15 +47,13 @@ return (
     </Nav>
   </Card.Header>
   <Card.Body>
-  <div>
-        <h2>Pate</h2>
-      </div>
+  
   </Card.Body>
 </Card>
 <Card>
     <Card.Body>
       <Card.Title>Funding status</Card.Title>
-      
+
     </Card.Body>
   </Card>
 </CardGroup>

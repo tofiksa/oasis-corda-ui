@@ -16,12 +16,13 @@ class Projects extends Component {
     accounts: [],
     tokenUriBalanceMap: [],
     authString: '',
-    rowArray: []
+    rowArray: [],
+    project: []
   }
 
     
-  constructor () {
-    super();
+  constructor (props) {
+    super(props);
   }
   
   componentDidMount() {
@@ -104,7 +105,7 @@ class Projects extends Component {
 
       <div className={"container"}>
         <div>
-        <Project/>
+        <Project props={this.state} />
         
         <Card>
           <Card.Body>
