@@ -52,11 +52,19 @@ class Projects extends Component {
             for( let category = 0;category < projectAccounts.length; category++) {
               let rowArr = [];
               rowArr.push(
-                <a key={projectAccounts[category].address.uri} href={'/project/'+projectAccounts[category].address.accountId}><p>{projectAccounts[category].address.accountId}</p></a>);
+                <a key={projectAccounts[category].address.uri} href='#' onClick={(e) => this.getProjectInfo(e,projectAccounts[category])}>{projectAccounts[category].address.accountId}</a>);
               for ( let value = 0; value < projectAccounts[category].tags.length; value++) {    
                 if (projectAccounts[category].tags[value].category !== 'DGL.ID') {
                   if (projectAccounts[category].tags[value].category !== 'Accounttype') {
+                    if (projectAccounts[category].tags[value].category !== 'start') {
+                      if (projectAccounts[category].tags[value].category !== 'operation') {
+                        if (projectAccounts[category].tags[value].category !== 'organization') {
+                          if (projectAccounts[category].tags[value].category !== 'grid') {
                     rowArr.push(projectAccounts[category].tags[value].value);
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -66,6 +74,7 @@ class Projects extends Component {
 
             this.setState({ accounts: projectAccounts});
             this.setState( { rowArray: rowCategories});
+            this.setState( { project: projectAccounts[0]});
         });
         
       } else {
@@ -75,17 +84,25 @@ class Projects extends Component {
       this.getBalances();
   }
 
-  getBalances() {
-    return this.state.accounts.map( account => 
+  getProjectInfo(event,projectAccounts) {
+    this.setState({ project: projectAccounts });
+    this.getBalances(projectAccounts.address.accountId);
+    console.log(projectAccounts);
+  }
+
+  getBalances(accountId) {
+      if (!accountId)
+        accountId = 'Naivasha';
+
       api({
         method: 'get',
         headers: {'Authorization': localStorage.getItem("authstring")},
-        url: `/ledger/accounts/${account.address.accountId}/balances`
+        url: `/ledger/accounts/${accountId}/balances`
       }).then((resp) => {
         console.log("balances ", resp.data.tokenUriBalanceMap);
-        localStorage.setItem(account.address.accountId,JSON.stringify(resp.data.tokenUriBalanceMap));
-        
-      }));
+        //localStorage.setItem(account.address.accountId,JSON.stringify(resp.data.tokenUriBalanceMap));
+        this.setState( { tokenUriBalanceMap: resp.data.tokenUriBalanceMap});
+      });
   }
 
   render () {
