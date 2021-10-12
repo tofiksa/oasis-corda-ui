@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
-import AuthService from '../services/authservice';
+import { useHistory } from "react-router-dom";
 
-class Home extends Component {
+export default function Home() {
 
-  componentDidMount() {
-    AuthService.login();
+    const history = useHistory();
+    history.push("/login");  
+      
+    return (
+        <h1>Home!!!</h1>
+    );
   }
-
     
-      render () {
-        return (
-            <h1>Home!!!</h1>
-        );
-      }
-    }
-    
-
-
-export default Home;
