@@ -7,13 +7,15 @@ const api = axios.create({
 
 class AuthService {
 
-  login() {
+  login(username,password) {
   return api({
     method: 'post',
       url: '/auth/login',
       data: {
-          username: 'oasis-corner',
-          password: 'kQmI5U2HngmX1oLc'
+          //username: 'oasis-corner',
+          //password: 'kQmI5U2HngmX1oLc'
+          username: username,
+          password: password
       }
   }).then((response) => {
     if(response.status === 200) {
@@ -31,7 +33,10 @@ class AuthService {
   }
 
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem('authstring'));;
+    if (localStorage.getItem('authstring'))
+      return true;
+    else
+      return false;
   }
 }
 

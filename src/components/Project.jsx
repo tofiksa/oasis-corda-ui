@@ -7,7 +7,7 @@ import Table from 'react-bootstrap/Table'
 
 const Project = props => {
 
-console.log("PROPS PROJECT: ", props);
+//console.log("PROPS PROJECT: ", props);
 
 const getBalancesFromAccount = () => {
   let arrBalances = [];
