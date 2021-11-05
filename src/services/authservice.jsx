@@ -12,15 +12,13 @@ class AuthService {
     method: 'post',
       url: '/auth/login',
       data: {
-          //username: 'oasis-corner',
-          //password: 'kQmI5U2HngmX1oLc'
           username: username,
           password: password
       }
   }).then((response) => {
     if(response.status === 200) {
       console.log(response);
-      //this.setState({authString: "Bearer "+response.data});
+
       localStorage.setItem("authstring","Bearer "+response.data);
     }
     }).catch((error) => {
@@ -32,7 +30,7 @@ class AuthService {
     localStorage.removeItem("authstring");
   }
 
-  getCurrentUser() {
+  hasAuthString() {
     if (localStorage.getItem('authstring'))
       return true;
     else

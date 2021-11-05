@@ -21,9 +21,12 @@ export default function Login() {
     event.preventDefault();
   
     try {
-      await AuthService.login(username, password);
-      userHasAuthenticated(true);
-      history.push("/projects");
+      if (await AuthService.login(username, password)) {
+        userHasAuthenticated(true);
+        history.push("/projects");
+      } else {
+        history.push("/login");
+      }
     } catch (e) {
       alert(e.message);
     }

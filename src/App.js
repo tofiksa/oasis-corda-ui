@@ -26,8 +26,8 @@ function App() {
   
   async function onLoad() {
     try {
-      await AuthService.getCurrentUser();
-      console.log("AUTHSERVICE: ",AuthService.getCurrentUser());
+      await AuthService.hasAuthString();
+      console.log("AUTHSERVICE: ",AuthService.hasAuthString());
       userHasAuthenticated(true);
     }
     catch(e) {
