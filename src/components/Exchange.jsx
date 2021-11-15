@@ -69,7 +69,7 @@ export default function Exchange() {
               accounts: response
             });
             setBusy(false);
-            console.log(response);
+            console.log("hepphepp:", response.data.map(res => res.tags.filter(rs => (!rs.value.includes("person")))));
           }
           }).catch((error) => {
             console.log(Promise.reject(error));
@@ -112,9 +112,8 @@ export default function Exchange() {
     }
 
     function handleProjectChoice(e) {
-      console.log("project choice: ", project);
-      console.log("User: ", userHasAuthenticated);
-
+      setProject(e);
+      console.log("project choice: ", e);
     }
     
     return (
@@ -157,7 +156,7 @@ export default function Exchange() {
                   </div>
                 </div> */}
                  {!isBusy && 
-                <FormControl as="select" onChange={(e) => handleProjectChoice(setProject(e.target.value))}>
+                <FormControl as="select" onChange={(e) => handleProjectChoice(e.target.value)}>
                   {ledgerAccounts && ledgerAccounts.accounts.data.map((e, key) => {
                     return <option key={key} value={e.address.accountId}>{e.address.accountId}</option>;
                 })}
