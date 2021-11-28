@@ -9,7 +9,7 @@ import LedgerAccountService from "../services/ledgerAccountservice";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
-import {BASE_OAS_API_URL} from '../config/url'
+import {BASE_OAS_API_URL, BASE_API_URL} from '../config/url'
 import axios from "axios";
 import { useAppContext } from "../config/contextLib";
 
@@ -17,6 +17,10 @@ import { useAppContext } from "../config/contextLib";
 const api = axios.create({
     baseURL: BASE_OAS_API_URL,
   });
+
+const daslaAPI = axios.create({
+  baseURL: BASE_API_URL,
+})
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -36,7 +40,9 @@ export default function Exchange() {
     const [isLoading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
     const [ledgerAccounts, setLedgerAccounts] = useState({});
-    const [isBusy, setBusy] = useState(true)
+    const [getBalance, setBalance] = useState({});
+    const [isBusy, setBusy] = useState(true);
+    const [isChoosingProject, setChoosingProject] = useState(false);
     const { userHasAuthenticated } = useAppContext();
 
     function validateForm() {
@@ -81,6 +87,20 @@ export default function Exchange() {
         alert(e.message);
       }
     }
+
+    async function getBalances(accountId) {
+      if (!accountId)
+        accountId = 'Naivasha';
+
+      daslaAPI({
+        method: 'get',
+        headers: {'Authorization': localStorage.getItem("authstring")},
+        url: `/ledger/accounts/${accountId}/balances`
+      }).then((resp) => {
+        console.log("balances ", resp.data.tokenUriBalanceMap);
+        setBalance(resp.data.tokenUriBalanceMap);
+      });
+  }
   
     async function handleSubmit(event) {
       event.preventDefault();
@@ -113,7 +133,10 @@ export default function Exchange() {
 
     function handleProjectChoice(e) {
       setProject(e);
-      console.log("project choice: ", e);
+      setChoosingProject(true);
+      const acceptedCurrency = getBalances(e);
+      console.log("project choice: ", acceptedCurrency);
+      
     }
     
     return (
@@ -131,44 +154,28 @@ export default function Exchange() {
             </Button>
           </div>
         </Alert>
-              {/* <Form onSubmit={handleSubmit}>
-                <div className="input-group mb-3">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text" id="basic-addon1">From</span>
-                  </div>
-                  <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="form-control" placeholder="Sender's username" aria-label="Username" aria-describedby="basic-addon1"/>
-                </div>
-
-                <div className="input-group mb-3">
-                <div className="input-group-prepend">
-                    <span className="input-group-text" id="basic-addon1">To</span>
-                  </div>
-                  <input type="text" value={project} onChange={(e) => setProject(e.target.value)} className="form-control" placeholder="Recipient's project" aria-label="Recipient's username" aria-describedby="basic-addon2"/>
-                </div>
-
-                <div className="input-group mb-3">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text">Amount</span>
-                  </div>
-                  <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} className="form-control" aria-label="Amount (to the nearest dollar)"/>
-                  <div className="input-group-append">
-                    <span className="input-group-text">.00</span>
-                  </div>
-                </div> */}
+        <Form onSubmit={handleSubmit}>
                  {!isBusy && 
                 <FormControl as="select" onChange={(e) => handleProjectChoice(e.target.value)}>
                   {ledgerAccounts && ledgerAccounts.accounts.data.map((e, key) => {
                     return <option key={key} value={e.address.accountId}>{e.address.accountId}</option>;
                 })}
-                {isBusy && 
-                <Backdrop className={classes.backdrop} open>
-                  <CircularProgress color="inherit" />
-                </Backdrop>
-                }
                 </FormControl>
-                
-                
                 }
+                {isChoosingProject && 
+                <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="basic-addon1">From</span>
+                </div>
+                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="form-control" placeholder="Sender's username" aria-label="Username" aria-describedby="basic-addon1"/>
+                <div className="input-group-prepend">
+                  <span className="input-group-text">Amount</span>
+                </div>
+                <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} className="form-control" aria-label="Amount (to the nearest dollar)"/>
+                <div className="input-group-append">
+                  <span className="input-group-text">.00</span>
+                </div>
+              </div>}
                 {!isLoading && <Button block size="lg" type="submit" disabled={!validateForm()}>
                   Send
               </Button>}
@@ -183,9 +190,13 @@ export default function Exchange() {
                   />
                   Transfering...
                 </Button> }
-         
-          
-            
+                </Form>
+
+                {isBusy && 
+                <Backdrop className={classes.backdrop} open>
+                  <CircularProgress color="inherit" />
+                </Backdrop>
+                }
         </div>
     );
 }
