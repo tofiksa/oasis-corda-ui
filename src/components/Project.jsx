@@ -12,18 +12,13 @@ const Project = props => {
 const getBalancesFromAccount = () => {
   let arrBalances = [];
   if (props.props.tokenUriBalanceMap) {
-
     for (var index in props.props.tokenUriBalanceMap) {
         var currency = index.substring(0,3);
         arrBalances.push({currencyKey: currency, amount: props.props.tokenUriBalanceMap[index].total});
     }
-
-    
   }
   return arrBalances;
 }
-
-
 
 return (
 

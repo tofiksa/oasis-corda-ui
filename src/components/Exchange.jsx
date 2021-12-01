@@ -43,6 +43,7 @@ export default function Exchange() {
     const [getBalance, setBalance] = useState({});
     const [isBusy, setBusy] = useState(true);
     const [isChoosingProject, setChoosingProject] = useState(false);
+    const [currencyUnit, setCurrencyUnit] = useState([]);
     const { userHasAuthenticated } = useAppContext();
 
     function validateForm() {
@@ -97,18 +98,21 @@ export default function Exchange() {
         headers: {'Authorization': localStorage.getItem("authstring")},
         url: `/ledger/accounts/${accountId}/balances`
       }).then((resp) => {
-        console.log("balances ", resp.data.tokenUriBalanceMap);
         setBalance(resp.data.tokenUriBalanceMap);
+        console.log("balances ", getBalance);
       });
   }
   
     async function handleSubmit(event) {
       event.preventDefault();
       setLoading(true);
+      
+      //let result = text.match(/^[A-Z]*/g);
       try {
         console.log("This is typed: ", username, project, amount);
         const transferResponse = await TransferService.transfer(username,project,amount,"USD");
         console.log("Transferlog: ", transferResponse);
+        
         setLoading(false);
         setShow(true)
         
@@ -133,11 +137,23 @@ export default function Exchange() {
 
     function handleProjectChoice(e) {
       setProject(e);
-      setChoosingProject(true);
-      const acceptedCurrency = getBalances(e);
-      console.log("project choice: ", acceptedCurrency);
       
+      setChoosingProject(true);
+      getBalances(e);
+      
+      const currencyUnits = getBalance;
+      if (currencyUnits) {
+        let arrBalances = [];
+        for (var index in currencyUnits) {
+            var currency = index.match(/^[A-Z]*/g);
+            arrBalances.push(currency);
+        }
+        setCurrencyUnit(arrBalances);
+      }
+
     }
+
+    console.log("Currency: ", currencyUnit);
     
     return (
       
@@ -173,7 +189,9 @@ export default function Exchange() {
                 </div>
                 <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} className="form-control" aria-label="Amount (to the nearest dollar)"/>
                 <div className="input-group-append">
-                  <span className="input-group-text">.00</span>
+                  <span className="input-group-text"><select onChange={(event) => handleProjectChoice(event.target.value)}>{currencyUnit && currencyUnit.map((event,key) => {
+                    return (<option key={key} value={event}>{event}</option>);
+                  })}</select></span>
                 </div>
               </div>}
                 {!isLoading && <Button block size="lg" type="submit" disabled={!validateForm()}>
