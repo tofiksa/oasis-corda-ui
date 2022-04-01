@@ -4,16 +4,16 @@
   "private": true,
   "proxy": "https://oasisapi123.azurewebsites.net",
   "dependencies": {
-    "@material-ui/core": "^4.12.3",
-    "@material-ui/icons": "^4.11.2",
+    "@material-ui/core": "4.12.3",
+    "@material-ui/icons": "4.11.2",
     "@testing-library/jest-dom": "5.16.3",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
+    "@testing-library/react": "11.2.7",
+    "@testing-library/user-event": "12.8.3",
     "axios": "0.26.1",
     "bootstrap": "5.1.3",
-    "react": "^17.0.2",
+    "react": "17.0.2",
     "react-bootstrap": "2.2.2",
-    "react-dom": "^17.0.2",
+    "react-dom": "17.0.2",
     "react-number-format": "4.9.1",
     "react-router-dom": "6.3.0",
     "react-scripts": "5.0.0",
@@ -45,6 +45,6 @@
     ]
   },
   "devDependencies": {
-    "@welldone-software/why-did-you-render": "^6.2.3"
+    "@welldone-software/why-did-you-render": "6.2.3"
   }
 }
